@@ -17,13 +17,13 @@ fn main() {
     //     estimate.guesses, estimate.guesses_log10
     // );
 
-    print_guess_time(estimate.crack_times_display);
-    println!("");
+    print_guess_time(&estimate.crack_times_display);
+    println!();
     give_feedback(estimate.feedback);
-    println!("");
+    println!();
 }
 
-fn print_guess_time(crack_times: zxcvbn::time_estimates::CrackTimesDisplay) {
+fn print_guess_time(crack_times: &zxcvbn::time_estimates::CrackTimesDisplay) {
     println!(
         "In a throttled online attack:      {}",
         crack_times.online_throttling_100_per_hour
@@ -46,10 +46,13 @@ fn give_feedback(feedback: Option<zxcvbn::feedback::Feedback>) {
     let spacer = "   ";
     match feedback {
         Some(feedback) => {
-            match feedback.warning {
-                Some(warning) => println!("Warning: {}", warning),
-                None => (),
+            if let Some(warning) = feedback.warning {
+                println!("Warning: {}", warning);
             }
+            // match feedback.warning {
+            //     Some(warning) => println!("Warning: {}", warning),
+            //     None => (),
+            // }
             println!("Suggestions");
             for suggestion in feedback.suggestions {
                 println!("{}- {}", spacer, suggestion)
