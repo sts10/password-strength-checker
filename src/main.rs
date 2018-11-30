@@ -1,12 +1,22 @@
 extern crate rpassword;
 extern crate zxcvbn;
 
+use std::env;
 use std::io;
 use zxcvbn::zxcvbn;
 
 fn main() {
+    let args: Vec<_> = env::args().collect();
+
     println!("\n");
-    let pass = rpassword::read_password_from_tty(Some("Enter the password to check: ")).unwrap();
+    let pass;
+    if args.len() > 1 && args[1] == "-u" {
+        println!("Enter the password to check (it will be displayed here): ");
+        pass = gets().unwrap();
+    } else {
+        pass = rpassword::read_password_from_tty(Some("Enter the password to check: ")).unwrap();
+    }
+
     println!("What's your most common username?");
     let username = gets().unwrap();
 
