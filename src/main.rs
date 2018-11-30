@@ -2,17 +2,16 @@ extern crate rpassword;
 extern crate zxcvbn;
 
 use std::io;
-use std::str::FromStr;
 use zxcvbn::zxcvbn;
 
 fn main() {
+    println!("\n");
     let pass = rpassword::read_password_from_tty(Some("Enter the password to check: ")).unwrap();
     println!("What's your most common username?");
     let username = gets().unwrap();
 
-    let estimate = zxcvbn(&pass, &[&username, "news", "CNN", "twitter", "facebook"]).unwrap();
-    println!("Score: {} out of 4", estimate.score);
-    println!("");
+    let estimate = zxcvbn(&pass, &[&username, "email", "gmail", "twitter", "facebook"]).unwrap();
+    println!("\nScore: {} out of 4\n", estimate.score);
     // println!(
     //     "Estimated number of guesses needed to crack: {} (10 ^ {})",
     //     estimate.guesses, estimate.guesses_log10
@@ -26,12 +25,12 @@ fn main() {
 
 fn print_guess_time(crack_times: zxcvbn::time_estimates::CrackTimesDisplay) {
     println!(
-        "In an (unthrottled) online attack: {}",
-        crack_times.online_no_throttling_10_per_second
-    );
-    println!(
         "In a throttled online attack:      {}",
         crack_times.online_throttling_100_per_hour
+    );
+    println!(
+        "In an unthrottled online attack:   {}",
+        crack_times.online_no_throttling_10_per_second
     );
     println!(
         "In a slowed offline attack:        {}",
@@ -39,12 +38,12 @@ fn print_guess_time(crack_times: zxcvbn::time_estimates::CrackTimesDisplay) {
     );
     println!(
         "In a fast offline attack:          {}",
-        crack_times.offline_slow_hashing_1e4_per_second
+        crack_times.offline_fast_hashing_1e10_per_second
     );
 }
 
 fn give_feedback(feedback: Option<zxcvbn::feedback::Feedback>) {
-    let spacer = "     ";
+    let spacer = "   ";
     match feedback {
         Some(feedback) => {
             match feedback.warning {
