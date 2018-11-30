@@ -1,0 +1,8 @@
+[package]
+name = "password-strength-checker"
+version = "0.1.0"
+authors = ["sts10 <sschlinkert@gmail.com>"]
+
+[dependencies]
+zxcvbn = "1.0.0"
+rpassword = "2.1.0"
