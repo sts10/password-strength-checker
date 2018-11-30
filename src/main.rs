@@ -9,28 +9,39 @@ fn main() {
     let args: Vec<_> = env::args().collect();
 
     println!("\n");
-    let pass;
-    if args.len() > 1 && args[1] == "-u" {
-        println!("Enter the password to check (it will be displayed here): ");
-        pass = gets().unwrap();
-    } else {
-        pass = rpassword::read_password_from_tty(Some("Enter the password to check: ")).unwrap();
+    loop {
+        let pass;
+        if args.len() > 1 && args[1].contains("u") {
+            println!("Enter the password to check (it will be displayed here): ");
+            pass = gets().unwrap();
+        } else {
+            pass =
+                rpassword::read_password_from_tty(Some("Enter the password to check: ")).unwrap();
+        }
+
+        println!("What's your most common username?");
+        let username = gets().unwrap();
+
+        let estimate =
+            zxcvbn(&pass, &[&username, "email", "gmail", "twitter", "facebook"]).unwrap();
+        println!("\nScore: {} out of 4\n", estimate.score);
+        // println!(
+        //     "Estimated number of guesses needed to crack: {} (10 ^ {})",
+        //     estimate.guesses, estimate.guesses_log10
+        // );
+
+        print_guess_time(&estimate.crack_times_display);
+        println!();
+        give_feedback(estimate.feedback);
+        println!();
+
+        if args.len() > 1 && args[1].contains("l") {
+            println!("---------------------------");
+            continue;
+        } else {
+            break;
+        }
     }
-
-    println!("What's your most common username?");
-    let username = gets().unwrap();
-
-    let estimate = zxcvbn(&pass, &[&username, "email", "gmail", "twitter", "facebook"]).unwrap();
-    println!("\nScore: {} out of 4\n", estimate.score);
-    // println!(
-    //     "Estimated number of guesses needed to crack: {} (10 ^ {})",
-    //     estimate.guesses, estimate.guesses_log10
-    // );
-
-    print_guess_time(&estimate.crack_times_display);
-    println!();
-    give_feedback(estimate.feedback);
-    println!();
 }
 
 fn print_guess_time(crack_times: &zxcvbn::time_estimates::CrackTimesDisplay) {
@@ -57,7 +68,7 @@ fn give_feedback(feedback: Option<zxcvbn::feedback::Feedback>) {
     match feedback {
         Some(feedback) => {
             if let Some(warning) = feedback.warning {
-                println!("Warning: {}", warning);
+                println!("Warning: {}\n", warning);
             }
             // match feedback.warning {
             //     Some(warning) => println!("Warning: {}", warning),
