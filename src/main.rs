@@ -10,14 +10,12 @@ fn main() {
 
     println!("\n");
     loop {
-        let pass;
-        if args.len() > 1 && args[1].contains("u") {
+        let pass = if args.len() > 1 && args[1].contains('u') {
             println!("Enter the password to check (it will be displayed here): ");
-            pass = gets().unwrap();
+            gets().unwrap()
         } else {
-            pass =
-                rpassword::read_password_from_tty(Some("Enter the password to check: ")).unwrap();
-        }
+            rpassword::read_password_from_tty(Some("Enter the password to check: ")).unwrap()
+        };
 
         println!("What's your most common username?");
         let username = gets().unwrap();
@@ -35,7 +33,7 @@ fn main() {
         give_feedback(estimate.feedback);
         println!();
 
-        if args.len() > 1 && args[1].contains("l") {
+        if args.len() > 1 && args[1].contains('l') {
             println!("---------------------------");
             continue;
         } else {
