@@ -58,7 +58,7 @@ fn give_feedback(feedback: Option<zxcvbn::feedback::Feedback>) {
                 println!("{}- {}", spacer, suggestion)
             }
         }
-        None => println!("No suggestions; your password is fine."),
+        None => println!("No suggestions."),
     }
 }
 
