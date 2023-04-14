@@ -1,4 +1,4 @@
-extern crate rpassword;
+// I wrote this Rust a while ago!
 extern crate zxcvbn;
 
 use std::env;
@@ -14,7 +14,7 @@ fn main() {
             println!("Enter the password to check (it will be displayed here): ");
             gets().unwrap()
         } else {
-            rpassword::read_password_from_tty(Some("Enter the password to check: ")).unwrap()
+            rpassword::prompt_password("Enter the password to check: ").unwrap()
         };
 
         println!("What's your most common username?");
