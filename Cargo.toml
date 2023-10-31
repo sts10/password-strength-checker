@@ -1,6 +1,6 @@
 [package]
 name = "password-strength-checker"
-version = "0.1.0"
+version = "0.1.1"
 edition = "2021"
 repository = "https://github.com/sts10/password-strength-checker"
 authors = ["sts10 <sschlinkert@gmail.com>"]
