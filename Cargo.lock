@@ -185,7 +185,7 @@ checksum = "b7e5500299e16ebb147ae15a00a942af264cf3688f47923b8fc2cd5858f23ad3"
 
 [[package]]
 name = "password-strength-checker"
-version = "0.1.1"
+version = "0.1.2"
 dependencies = [
  "rpassword",
  "zxcvbn",
