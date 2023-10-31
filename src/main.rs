@@ -2,19 +2,33 @@
 use std::io;
 use zxcvbn::zxcvbn;
 
-fn main() {
-    let pass = rpassword::prompt_password("Enter the password to check: ").unwrap();
+fn main() -> Result<(), String> {
+    let pass = match rpassword::prompt_password("Enter the password to check: ") {
+        Ok(pass) => pass,
+        Err(e) => return Err(format!("Error reading password: {}", e)),
+    };
 
     println!("What's your most common username?");
-    let username = gets().unwrap();
+    let username = match gets() {
+        Ok(username) => username,
+        Err(e) => return Err(format!("Error getting username: {}", e)),
+    };
 
-    let estimate = zxcvbn(&pass, &[&username, "email", "gmail", "twitter", "facebook"]).unwrap();
+    let estimate = match zxcvbn(&pass, &[&username, "email", "gmail", "twitter", "facebook"]) {
+        Ok(estimate) => estimate,
+        Err(e) => {
+            return Err(format!(
+                "Error estimating the strength of the password: {}",
+                e
+            ))
+        }
+    };
     println!("\nScore: {} out of 4\n", estimate.score());
 
     print_guess_time(&estimate.crack_times());
     println!();
     give_feedback(estimate.feedback());
-    println!();
+    Ok(())
 }
 
 fn print_guess_time(crack_times: &zxcvbn::time_estimates::CrackTimes) {
